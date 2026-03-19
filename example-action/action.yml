@@ -1,0 +1,20 @@
+name: 'Example Wombat Action'
+description: 'A template for creating new actions in this repository.'
+inputs:
+  greeting_name:
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  greeting_time:
+    description: 'The time the greeting was generated'
+runs:
+  using: 'composite'
+  steps:
+    - name: Greet
+      run: echo "Hello, ${{ inputs.greeting_name }} from Wombat Actions!"
+      shell: bash
+    - name: Record Time
+      id: time
+      run: echo "time=$(date)" >> $GITHUB_OUTPUT
+      shell: bash
