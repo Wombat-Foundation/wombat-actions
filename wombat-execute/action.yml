@@ -1,0 +1,40 @@
+---
+name: 'Wombat Execute'
+description: 'Runs a script either via SSH or locally based on WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY'
+inputs:
+  host:
+    description: 'SSH Host'
+    required: false
+  username:
+    description: 'SSH Username'
+    required: false
+  key:
+    description: 'SSH Private Key'
+    required: false
+  script:
+    description: 'Script to execute'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run via SSH
+      if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY == 'true'
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.username }}
+        key: ${{ inputs.key }}
+        script: ${{ inputs.script }}
+
+    - name: Run Locally
+      if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY != 'true'
+      shell: bash
+      run: |
+        TMP_SCRIPT=$(mktemp)
+        cat << 'EOF' > "$TMP_SCRIPT"
+        ${{ inputs.script }}
+        EOF
+        chmod +x "$TMP_SCRIPT"
+        bash "$TMP_SCRIPT"
+        rm -f "$TMP_SCRIPT"

@@ -1,0 +1,53 @@
+---
+name: 'Wombat Copy'
+description: 'Copies files via SCP or locally based on WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY'
+inputs:
+  host:
+    description: 'SSH Host'
+    required: false
+  username:
+    description: 'SSH Username'
+    required: false
+  key:
+    description: 'SSH Private Key'
+    required: false
+  source:
+    description: 'Comma-separated source paths'
+    required: true
+  target:
+    description: 'Target directory'
+    required: true
+  strip_components:
+    description: 'Strip path components'
+    required: false
+    default: '0'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Copy via SCP
+      if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY == 'true'
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.username }}
+        key: ${{ inputs.key }}
+        source: ${{ inputs.source }}
+        target: ${{ inputs.target }}
+        strip_components: ${{ inputs.strip_components }}
+
+    - name: Copy Locally
+      if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY != 'true'
+      shell: bash
+      run: |
+        sudo mkdir -p "${{ inputs.target }}"
+        IFS=',' read -ra SOURCES <<< "${{ inputs.source }}"
+        for src in "${SOURCES[@]}"; do
+          # Remove trailing/leading whitespace
+          src=$(echo "$src" | xargs)
+          if [ -d "$src" ] || [ -f "$src" ]; then
+            sudo cp -r "$src" "${{ inputs.target }}/"
+          else
+            echo "Warning: Source $src not found"
+          fi
+        done
