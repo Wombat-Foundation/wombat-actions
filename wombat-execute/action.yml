@@ -1,18 +1,18 @@
 ---
-name: 'Wombat Execute'
-description: 'Runs a script either via SSH or locally based on WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY'
+name: "Wombat Execute"
+description: "Runs a script either via SSH or locally based on WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY"
 inputs:
   host:
-    description: 'SSH Host'
+    description: "SSH Host"
     required: false
   username:
-    description: 'SSH Username'
+    description: "SSH Username"
     required: false
   key:
-    description: 'SSH Private Key'
+    description: "SSH Private Key"
     required: false
   script:
-    description: 'Script to execute'
+    description: "Script to execute"
     required: true
 
 runs:

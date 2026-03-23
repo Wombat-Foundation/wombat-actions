@@ -13,6 +13,7 @@ First off, thank you for considering contributing to Wombat Actions! ✓ It's pe
 ## Adding a New Action
 
 When adding a new action, please ensure you include:
+
 - A self-contained directory for the action (e.g., `my-new-action/`).
 - An `action.yml` file defining the action's inputs, outputs, and runs configuration.
 - A `README.md` within the action's directory detailing its usage.

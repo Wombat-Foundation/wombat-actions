@@ -4,15 +4,15 @@ This is an example action to demonstrate the structure of actions within the `wo
 
 ## Inputs
 
-| Name            | Description   | Required | Default |
-| --------------- | ------------- | -------- | ------- |
-| `greeting_name` | Who to greet  | `true`   | `World` |
+| Name            | Description  | Required | Default |
+| --------------- | ------------ | -------- | ------- |
+| `greeting_name` | Who to greet | `true`   | `World` |
 
 ## Outputs
 
-| Name            | Description                           |
-| --------------- | ------------------------------------- |
-| `greeting_time` | The time the greeting was generated.  |
+| Name            | Description                          |
+| --------------- | ------------------------------------ |
+| `greeting_time` | The time the greeting was generated. |
 
 ## Usage
 
@@ -26,5 +26,5 @@ jobs:
       - name: Example Action Step
         uses: ./example-action
         with:
-          greeting_name: 'Wombat Fan'
+          greeting_name: "Wombat Fan"
 ```

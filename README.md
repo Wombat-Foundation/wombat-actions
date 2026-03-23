@@ -4,7 +4,7 @@ Welcome to **Wombat Actions**! This repository houses a collection of reusable G
 
 ## Available Actions
 
-*   [Example Action](./example-action) - A brief template demonstrating how to structure an action in this repository.
+- [Example Action](./example-action) - A brief template demonstrating how to structure an action in this repository.
 
 ## Usage
 
@@ -14,7 +14,7 @@ To use an action from this repository in your workflow, reference it using the s
 steps:
   - uses: your-org/wombat-actions/example-action@main
     with:
-      greeting_name: 'Collaborator'
+      greeting_name: "Collaborator"
 ```
 
 ## Contributing

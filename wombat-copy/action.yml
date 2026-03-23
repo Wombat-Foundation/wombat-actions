@@ -1,26 +1,26 @@
 ---
-name: 'Wombat Copy'
-description: 'Copies files via SCP or locally based on WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY'
+name: "Wombat Copy"
+description: "Copies files via SCP or locally based on WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY"
 inputs:
   host:
-    description: 'SSH Host'
+    description: "SSH Host"
     required: false
   username:
-    description: 'SSH Username'
+    description: "SSH Username"
     required: false
   key:
-    description: 'SSH Private Key'
+    description: "SSH Private Key"
     required: false
   source:
-    description: 'Comma-separated source paths'
+    description: "Comma-separated source paths"
     required: true
   target:
-    description: 'Target directory'
+    description: "Target directory"
     required: true
   strip_components:
-    description: 'Strip path components'
+    description: "Strip path components"
     required: false
-    default: '0'
+    default: "0"
 
 runs:
   using: "composite"
