@@ -33,6 +33,7 @@ runs:
       run: |
         TMP_SCRIPT=$(mktemp)
         cat << 'EOF' > "$TMP_SCRIPT"
+        set -x
         ${{ inputs.script }}
         EOF
         chmod +x "$TMP_SCRIPT"
