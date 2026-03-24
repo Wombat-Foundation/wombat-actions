@@ -11,6 +11,9 @@ inputs:
   key:
     description: "SSH Private Key"
     required: false
+  envs:
+    description: "Environment variables to pass to the remote host"
+    required: false
   script:
     description: "Script to execute"
     required: true
@@ -25,6 +28,7 @@ runs:
         host: ${{ inputs.host }}
         username: ${{ inputs.username }}
         key: ${{ inputs.key }}
+        envs: ${{ inputs.envs }}
         script: ${{ inputs.script }}
 
     - name: Run Locally
