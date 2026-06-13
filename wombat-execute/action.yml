@@ -23,13 +23,20 @@ runs:
   steps:
     - name: Run via SSH
       if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY == 'true'
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ inputs.host }}
-        username: ${{ inputs.username }}
-        key: ${{ inputs.key }}
-        envs: ${{ inputs.envs }}
-        script: ${{ inputs.script }}
+      shell: bash
+      run: |
+        # Write the SSH private key safely to a temporary file
+        SSH_KEY_FILE=$(mktemp)
+        echo "${{ inputs.key }}" > "$SSH_KEY_FILE"
+        chmod 600 "$SSH_KEY_FILE"
+
+        # Execute the script remotely using native ssh client
+        ssh -o StrictHostKeyChecking=no -i "$SSH_KEY_FILE" "${{ inputs.username }}@${{ inputs.host }}" "bash -s" << 'EOF'
+        ${{ inputs.script }}
+        EOF
+
+        # Clean up key file
+        rm -f "$SSH_KEY_FILE"
 
     - name: Run Locally
       if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY != 'true'

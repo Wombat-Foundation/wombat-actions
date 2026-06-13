@@ -27,14 +27,24 @@ runs:
   steps:
     - name: Copy via SCP
       if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY == 'true'
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ inputs.host }}
-        username: ${{ inputs.username }}
-        key: ${{ inputs.key }}
-        source: ${{ inputs.source }}
-        target: ${{ inputs.target }}
-        strip_components: ${{ inputs.strip_components }}
+      shell: bash
+      run: |
+        # Write SSH key
+        SSH_KEY_FILE=$(mktemp)
+        echo "${{ inputs.key }}" > "$SSH_KEY_FILE"
+        chmod 600 "$SSH_KEY_FILE"
+
+        # Transfer files via native scp
+        IFS=',' read -ra SOURCES <<< "${{ inputs.source }}"
+        for src in "${SOURCES[@]}"; do
+          src=$(echo "$src" | xargs)
+          if [ -d "$src" ] || [ -f "$src" ]; then
+            scp -o StrictHostKeyChecking=no -i "$SSH_KEY_FILE" -r "$src" "${{ inputs.username }}@${{ inputs.host }}:${{ inputs.target }}/"
+          fi
+        done
+
+        # Clean up
+        rm -f "$SSH_KEY_FILE"
 
     - name: Copy Locally
       if: env.WOMBAT_GITHUB_ACTION_USE_REMOTE_SSH_DEPLOY_STRATEGY != 'true'
